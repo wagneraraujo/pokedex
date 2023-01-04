@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../services/api'
 import * as S from "./styles"
-import { Text } from "react-native"
-type PokemonType = [
+import { FlatList, Text } from "react-native"
+import { PokemonCard } from '../../components/Card/styles'
+import { Card } from '../../components/Card'
+type PokemonType = {
     type: string
-]
+}
 type Pokemon = {
     name: string
     url: string
@@ -21,7 +23,7 @@ export function Home() {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
     useEffect(() => {
         async function getAllPokemons() {
-            const response = await api.get('/pokemon')
+            const response = await api.get('/pokemon?limit=10&offset=0')
             const { results } = response.data;
 
             const payloadPokemons = await Promise.all(
@@ -52,9 +54,9 @@ export function Home() {
         }
     }
     return <S.Container>
-        {
-            pokemons.map(item => <Text>{item.name}</Text>)
-        }
-
+        <FlatList data={pokemons} keyExtractor={pokemon => pokemon.id.toString()} renderItem={({ item: pokemon }) => (
+            <Card data={pokemon} />
+        )}
+        />
     </S.Container>
 }
