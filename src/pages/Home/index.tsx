@@ -3,16 +3,16 @@ import api from '../../services/api'
 import * as S from "./styles"
 import { FlatList, Text } from "react-native"
 import { PokemonCard } from '../../components/Card/styles'
-import { Card } from '../../components/Card'
-type PokemonType = {
-    type: string
-}
-type Pokemon = {
-    name: string
-    url: string
-    id: number
-    types: PokemonType[]
-}
+import { Card, Pokemon, PokemonType } from '../../components/Card'
+// type PokemonType = {
+//     type: string
+// }
+// type Pokemon = {
+//     name: string
+//     url: string
+//     id: number
+//     types: PokemonType[]
+// }
 
 type Request = {
     id: number
