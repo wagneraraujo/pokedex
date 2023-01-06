@@ -5,6 +5,8 @@ import { FlatList, Text } from "react-native"
 import { PokemonCard } from '../../components/Card/styles'
 import { Card, Pokemon, PokemonType } from '../../components/Card'
 import { FadeAnimation } from '../../components/FadeAnimation'
+import pokeballheader from '../../../assets/pokeball.png'
+import { useNavigation } from '@react-navigation/native'
 // type PokemonType = {
 //     type: string
 // }
@@ -22,6 +24,13 @@ type Request = {
 
 export function Home() {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
+    const { navigate } = useNavigation();
+
+    function handleNavigation(pokemonId: number) {
+        navigate('About', {
+            pokemonId,
+        })
+    }
     useEffect(() => {
         async function getAllPokemons() {
             const response = await api.get('/pokemon?limit=10&offset=0')
@@ -55,9 +64,14 @@ export function Home() {
         }
     }
     return <S.Container>
-        <FlatList data={pokemons} keyExtractor={pokemon => pokemon.id.toString()} renderItem={({ item: pokemon }) => (
+        <FlatList ListHeaderComponent={<>
+            <S.Header source={pokeballheader} >
+                <S.Title>Pokedex</S.Title>
+            </S.Header>
+
+        </>} data={pokemons} keyExtractor={pokemon => pokemon.id.toString()} renderItem={({ item: pokemon }) => (
             <FadeAnimation>
-                <Card data={pokemon} />
+                <Card data={pokemon} onPress={() => handleNavigation(pokemon.id)} />
             </FadeAnimation>
 
         )}
